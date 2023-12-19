@@ -1,0 +1,2 @@
+# wxShare
+WeixinJSBridge
