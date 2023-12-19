@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<head>
+    <title>微信WeixinJSBridge API</title>
+    <meta charset=utf-8>
+</head>
+<body>
+    <section class=mod-page-body>
+        <div class="mod-page-main wordwrap clearfix">
+            <div class=mod-pageheader></div>
+            <div class=mod-pagecontent>
+                <div class=mod-weixinjsapi>
+                    <h3 class=tips>Tips：本页面只在微信中打开有效！</h3>
+                    <div id=WeixinJsApi>
+                        <input type=button id=toggleMenuBtn value="隐藏右上角按钮">
+                        <input type=button id=toggleToolbar value="隐藏底部导航栏">
+                        <input type=button id=getNetType value="获取网络状态">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        var menuHidden = false;
+        var toolbarHidden = false;
+        var netType = {
+            "network_type:wifi": "wifi网络",
+            "network_type:edge": "非wifi,包含3G/2G",
+            "network_type:fail": "网络断开连接",
+            "network_type:wwan": "2g或者3g"
+        };
+        document.addEventListener("WeixinJSBridgeReady", function onBridgeReady() {
+            document.getElementById("toggleMenuBtn").addEventListener("click", function (a) {
+                if (!menuHidden) {
+                    WeixinJSBridge.call("hideOptionMenu");
+                    menuHidden = true;
+                    this.value = "显示右上角按钮"
+                } else {
+                    WeixinJSBridge.call("showOptionMenu");
+                    menuHidden = false;
+                    this.value = "隐藏右上角按钮"
+                }
+            }, false);
+            document.getElementById("toggleToolbar").addEventListener("click", function (a) {
+                if (!toolbarHidden) {
+                    WeixinJSBridge.call("hideToolbar");
+                    toolbarHidden = true;
+                    this.value = "显示底部导航栏"
+                } else {
+                    WeixinJSBridge.call("showToolbar");
+                    toolbarHidden = false;
+                    this.value = "隐藏底部导航栏"
+                }
+            }, false);
+            document.getElementById("getNetType").addEventListener("click", function (a) {
+                WeixinJSBridge.invoke("getNetworkType", {}, function (b) {
+                    alert(netType[b.err_msg])
+                })
+            }, false)
+        });
+        </script>
